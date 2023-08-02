@@ -31,5 +31,5 @@ func run() async throws {
         serverURL: try Servers.server1(),
         transport: MockClientTransport()
     )
-    _ = try await client.getGreeting(.init())
+    _ = try await client.___getGreeting(.init())
 }

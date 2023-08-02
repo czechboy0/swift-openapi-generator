@@ -16,8 +16,21 @@ import OpenAPIGeneratorExtensionsCLIProvider
 import OpenAPIGeneratorExtensionsAPI
 
 struct UnderscorerExtension: NamingExtension {
+    
+    static let allowlist: Set<String> = [
+        "query",
+        "body",
+        "headers",
+        "path",
+        "cookies",
+    ]
+    
     func computeName(_ openAPIName: OpenAPIName) async throws -> SwiftName {
-        return .init(computedName: "___" + openAPIName.originalName)
+        let string = openAPIName.originalName
+        if Self.allowlist.contains(string) {
+            return .init(computedName: string)
+        }
+        return .init(computedName: "___" + string)
     }
 }
 

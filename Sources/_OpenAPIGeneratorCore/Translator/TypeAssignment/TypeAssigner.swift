@@ -411,11 +411,9 @@ struct TypeAssigner {
     ) -> TypeName {
         typeNameForComponents()
             .appending(
-                swiftComponent: asSwiftSafeName(
-                    componentType
-                        .openAPIComponentsKey
-                )
-                .uppercasingFirstLetter,
+                swiftComponent: componentType
+                    .openAPIComponentsKey
+                    .uppercasingFirstLetter,
                 jsonComponent: componentType.openAPIComponentsKey
             )
     }

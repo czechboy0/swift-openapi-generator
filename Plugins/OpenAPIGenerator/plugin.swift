@@ -48,7 +48,16 @@ struct SwiftOpenAPIGeneratorPlugin {
                     // TODO: This doesn't work :(
                     // The plugin from SOAR get access to the tool built
                     // for the dependency.
-                    try tool(naming).path.string,
+//                    try tool(naming).path.string,
+                    
+                    // Hack: look for the sibling of the tool.
+                    // Hack because it depends on the generator and
+                    // the extension to be in the same build dir.
+                    try tool("swift-openapi-generator")
+                        .path
+                        .removingLastComponent()
+                        .appending(naming)
+                        .string
                 ])
             }
         }

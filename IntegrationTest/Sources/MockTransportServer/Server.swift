@@ -16,11 +16,11 @@ import Server
 import OpenAPIRuntime
 
 actor SimpleAPIImpl: APIProtocol {
-    func getGreeting(
-        _ input: Operations.getGreeting.Input
-    ) async throws -> Operations.getGreeting.Output {
-        let message = "Hello, \(input.query.name ?? "Stranger")!"
-        return .ok(.init(body: .json(.init(message: message))))
+    func ___getGreeting(
+        _ input: Operations.___getGreeting.Input
+    ) async throws -> Operations.___getGreeting.Output {
+        let message = "Hello, \(input.query.___name ?? "Stranger")!"
+        return .ok(.init(body: .json(.init(___message: message))))
     }
 }
 

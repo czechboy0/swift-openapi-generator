@@ -44,12 +44,12 @@ struct SwiftOpenAPIGeneratorPlugin {
             if let naming = extensions.naming {
                 arguments.append(contentsOf: [
                     "--compute-name-extension-path",
-                    
+
                     // TODO: This doesn't work :(
                     // The plugin from SOAR get access to the tool built
                     // for the dependency.
-//                    try tool(naming).path.string,
-                    
+                    //                    try tool(naming).path.string,
+
                     // Hack: look for the sibling of the tool.
                     // Hack because it depends on the generator and
                     // the extension to be in the same build dir.
@@ -57,7 +57,7 @@ struct SwiftOpenAPIGeneratorPlugin {
                         .path
                         .removingLastComponent()
                         .appending(naming)
-                        .string
+                        .string,
                 ])
             }
         }

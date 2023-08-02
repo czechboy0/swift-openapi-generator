@@ -28,7 +28,7 @@ swiftSettings.append(
 let package = Package(
     name: "swift-openapi-generator",
     platforms: [
-        .macOS(.v10_15),
+        .macOS(.v11),
 
         // The platforms below are not currently supported for running
         // the generator itself. We include them here to allow the generator
@@ -40,6 +40,8 @@ let package = Package(
         .plugin(name: "OpenAPIGenerator", targets: ["OpenAPIGenerator"]),
         .plugin(name: "OpenAPIGeneratorCommand", targets: ["OpenAPIGeneratorCommand"]),
         .library(name: "_OpenAPIGeneratorCore", targets: ["_OpenAPIGeneratorCore"]),
+        .library(name: "OpenAPIGeneratorExtensionsCLIProvider", targets: ["OpenAPIGeneratorExtensionsCLIProvider"]),
+        .library(name: "OpenAPIGeneratorExtensionsAPI", targets: ["OpenAPIGeneratorExtensionsAPI"]),
     ],
     dependencies: [
 
@@ -109,6 +111,31 @@ let package = Package(
             swiftSettings: swiftSettings
         ),
 
+        // Generator Extensions API
+        .target(
+            name: "OpenAPIGeneratorExtensionsAPI",
+            dependencies: [],
+            swiftSettings: swiftSettings
+        ),
+
+        // Generator Extensions Client
+        .target(
+            name: "OpenAPIGeneratorExtensionsClient",
+            dependencies: [
+                "OpenAPIGeneratorExtensionsAPI"
+            ],
+            swiftSettings: swiftSettings
+        ),
+
+        // Generator Extensions CLI Provider
+        .target(
+            name: "OpenAPIGeneratorExtensionsCLIProvider",
+            dependencies: [
+                "OpenAPIGeneratorExtensionsAPI"
+            ],
+            swiftSettings: swiftSettings
+        ),
+
         // GeneratorReferenceTests
         .testTarget(
             name: "OpenAPIGeneratorReferenceTests",
@@ -148,6 +175,7 @@ let package = Package(
             name: "swift-openapi-generator",
             dependencies: [
                 "_OpenAPIGeneratorCore",
+                "OpenAPIGeneratorExtensionsClient",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ],
             swiftSettings: swiftSettings

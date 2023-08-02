@@ -29,6 +29,8 @@ public struct Config {
     /// Additional pre-release features to enable.
     public var featureFlags: FeatureFlags
 
+    public var computeName: ((String) throws -> (String))?
+
     /// Creates a configuration with the specified generator mode and imports.
     /// - Parameters:
     ///   - mode: The mode to use for generation.
@@ -37,11 +39,13 @@ public struct Config {
     public init(
         mode: GeneratorMode,
         additionalImports: [String] = [],
-        featureFlags: FeatureFlags = []
+        featureFlags: FeatureFlags = [],
+        computeName: ((String) throws -> (String))? = nil
     ) {
         self.mode = mode
         self.additionalImports = additionalImports
         self.featureFlags = featureFlags
+        self.computeName = computeName
     }
 }
 

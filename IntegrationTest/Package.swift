@@ -42,7 +42,8 @@ let package = Package(
                 .product(
                     name: "OpenAPIRuntime",
                     package: "swift-openapi-runtime"
-                )
+                ),
+                "NamingExtension",
             ],
             plugins: [
                 .plugin(
@@ -100,6 +101,20 @@ let package = Package(
                 .product(
                     name: "OpenAPIRuntime",
                     package: "swift-openapi-runtime"
+                ),
+            ]
+        ),
+
+        .executableTarget(
+            name: "NamingExtension",
+            dependencies: [
+                .product(
+                    name: "OpenAPIGeneratorExtensionsAPI",
+                    package: "swift-openapi-generator"
+                ),
+                .product(
+                    name: "OpenAPIGeneratorExtensionsCLIProvider",
+                    package: "swift-openapi-generator"
                 ),
             ]
         ),

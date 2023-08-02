@@ -14,6 +14,10 @@
 import PackagePlugin
 import Foundation
 
+struct ExtensionsFile: Decodable {
+    var naming: String?
+}
+
 @main
 struct SwiftOpenAPIGeneratorPlugin {
     func createBuildCommands(
@@ -29,13 +33,32 @@ struct SwiftOpenAPIGeneratorPlugin {
             targetName: targetName,
             pluginSource: .build
         )
+        var arguments = inputs.arguments
+
+        if let extensionsFile =
+            sourceFiles
+            .first(where: { $0.path.lastComponent == "openapi-generator-extensions.json" })
+        {
+            let data = try Data(contentsOf: URL(fileURLWithPath: extensionsFile.path.string))
+            let extensions = try JSONDecoder().decode(ExtensionsFile.self, from: data)
+            if let naming = extensions.naming {
+                arguments.append(contentsOf: [
+                    "--compute-name-extension-path",
+                    
+                    // TODO: This doesn't work :(
+                    // The plugin from SOAR get access to the tool built
+                    // for the dependency.
+                    try tool(naming).path.string,
+                ])
+            }
+        }
 
         let outputFiles: [Path] = GeneratorMode.allCases.map { inputs.genSourcesDir.appending($0.outputFileName) }
         return [
             .buildCommand(
                 displayName: "Running swift-openapi-generator",
                 executable: inputs.tool.path,
-                arguments: inputs.arguments,
+                arguments: arguments,
                 environment: [:],
                 inputFiles: [
                     inputs.config,

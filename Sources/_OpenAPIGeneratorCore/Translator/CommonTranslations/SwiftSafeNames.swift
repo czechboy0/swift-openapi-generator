@@ -19,6 +19,9 @@ extension FileTranslator {
     ///
     /// - Parameter string: The string to convert to be safe for Swift.
     func swiftSafeName(for string: String) -> String {
+        if let computeName = config.computeName {
+            return try! computeName(string)
+        }
         guard config.featureFlags.contains(.proposal0001) else {
             return string.safeForSwiftCode
         }

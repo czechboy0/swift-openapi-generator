@@ -37,6 +37,9 @@ struct _GenerateOptions: ParsableArguments {
     @Option(help: "Pre-release feature to enable. Options: \(FeatureFlag.prettyListing).")
     var featureFlag: [FeatureFlag] = []
 
+    @Option(help: "A path to an extension CLI for naming.")
+    var computeNameExtensionPath: URL?
+
     @Option(
         help: "When specified, writes out the diagnostics into a YAML file instead of emitting them to standard error."
     )
@@ -44,17 +47,6 @@ struct _GenerateOptions: ParsableArguments {
 }
 
 extension _GenerateOptions {
-
-    /// The user-provided user config, not yet resolved with defaults.
-    var resolvedUserConfig: _UserConfig {
-        get throws {
-            let config = try loadedConfig()
-            return try .init(
-                generate: resolvedModes(config),
-                additionalImports: resolvedAdditionalImports(config)
-            )
-        }
-    }
 
     /// Returns a list of the generator modes requested by the user.
     /// - Parameter config: The configuration specified by the user.

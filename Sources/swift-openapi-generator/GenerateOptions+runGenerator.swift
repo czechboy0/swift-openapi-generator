@@ -14,6 +14,7 @@
 import _OpenAPIGeneratorCore
 import ArgumentParser
 import Foundation
+import OpenAPIGeneratorExtensionsClient
 
 extension _GenerateOptions {
 
@@ -34,11 +35,24 @@ extension _GenerateOptions {
         let sortedModes = try resolvedModes(config)
         let resolvedAdditionalImports = resolvedAdditionalImports(config)
         let resolvedFeatureFlags = resolvedFeatureFlags(config)
+        let computeName: ((String) throws -> String)?
+        if let extensionPath = self.computeNameExtensionPath {
+            computeName = { name in
+                try InvokeNamingExtension(
+                    toolPath: extensionPath,
+                    input: .init(originalName: name)
+                )
+                .computedName
+            }
+        } else {
+            computeName = nil
+        }
         let configs: [Config] = sortedModes.map {
             .init(
                 mode: $0,
                 additionalImports: resolvedAdditionalImports,
-                featureFlags: resolvedFeatureFlags
+                featureFlags: resolvedFeatureFlags,
+                computeName: computeName
             )
         }
         let diagnostics: any DiagnosticCollector

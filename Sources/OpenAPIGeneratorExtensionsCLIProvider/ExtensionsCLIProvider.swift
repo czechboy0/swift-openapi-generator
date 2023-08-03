@@ -15,10 +15,16 @@
 import OpenAPIGeneratorExtensionsAPI
 import Foundation
 
-public func RegisterCLINamingExtension(_ ext: any NamingExtension) async throws {
-    let inputData = FileHandle.standardInput.readDataToEndOfFile()
-    let input = try JSONDecoder().decode(OpenAPIName.self, from: inputData)
-    let output = try await ext.computeName(input)
-    let outputData = try JSONEncoder().encode(output)
-    print(String(decoding: outputData, as: UTF8.self))
+public protocol NamingExtensionCLI: NamingExtension {
+    init()
+}
+
+extension NamingExtensionCLI {
+    public static func main() async throws {
+        let inputData = FileHandle.standardInput.readDataToEndOfFile()
+        let input = try JSONDecoder().decode(OpenAPIName.self, from: inputData)
+        let output = try await Self.init().computeName(input)
+        let outputData = try JSONEncoder().encode(output)
+        print(String(decoding: outputData, as: UTF8.self))
+    }
 }

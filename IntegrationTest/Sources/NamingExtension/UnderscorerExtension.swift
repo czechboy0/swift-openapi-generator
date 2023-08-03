@@ -15,7 +15,8 @@
 import OpenAPIGeneratorExtensionsCLIProvider
 import OpenAPIGeneratorExtensionsAPI
 
-struct UnderscorerExtension: NamingExtension {
+@main
+struct UnderscorerExtension: NamingExtensionCLI {
 
     static let allowlist: Set<String> = [
         "query",
@@ -31,12 +32,5 @@ struct UnderscorerExtension: NamingExtension {
             return .init(computedName: string)
         }
         return .init(computedName: "___" + string)
-    }
-}
-
-@main
-struct Tool {
-    static func main() async throws {
-        try await RegisterCLINamingExtension(UnderscorerExtension())
     }
 }

@@ -17,7 +17,7 @@ import Vapor
 import AuthenticationServerMiddleware
 
 struct Handler: APIProtocol {
-    func getGreeting(_ input: Operations.getGreeting.Input) async throws -> Operations.getGreeting.Output {
+    func getGreeting(_ input: Operations.GetGreeting.Input) async throws -> Operations.GetGreeting.Output {
         // Extract the authenticated user, if present.
         // If unauthenticated, return the 401 HTTP status code.
         // Note that the 401 is defined in the OpenAPI document, allowing the client
